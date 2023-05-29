@@ -59,7 +59,8 @@ def tweet_latest_japscan(j):
 
 # Exécuter en boucle
 n=1
-while True:
-    tweet_latest_japscan(n)
-    n=n+1
-    time.sleep(60) 
+tweet_latest_japscan(n)
+#while True:
+#    tweet_latest_japscan(n)
+#    n=n+1
+#    time.sleep(60) 
