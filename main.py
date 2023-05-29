@@ -31,7 +31,7 @@ LIST_MANGAS = ["Eternal Club",
                "One Piece",
                "What Are We"]
 
-# Fonction pour tweeter les scans
+# Fonction pour tweeter les scans de japscan
 def tweet_latest_japscan():
     # Récupération des scans à partir du site japscan
     news_url = 'https://www.japscan.lol/'
@@ -59,14 +59,10 @@ def tweet_latest_japscan():
                 # Ajouter le scan à la liste des scans publiés
                 collection.insert_one({'titre': titre, 'chapitre': chapitre})
 
-    # Enregistrer les scans dans le fichier
-    with open('scans_tweetes.txt', 'w',encoding='utf-8') as file:
-        file.write('\n'.join(scans_tweetes))
-
     print('Tous les nouveaux tweets ont été publiés !')
 
-
+tweet_latest_japscan()
 # Exécuter en boucle
-while True:
-    tweet_latest_japscan()
-    time.sleep(60) 
+#while True:
+#    tweet_latest_japscan()
+#    time.sleep(60) 
