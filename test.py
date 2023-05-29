@@ -1,29 +1,28 @@
+import os
 import tweepy
 import requests
 from bs4 import BeautifulSoup
 import time
 
-# Clés d'accès à l'API Twitter
-bearer='AAAAAAAAAAAAAAAAAAAAAF88nwEAAAAATw0r6XIz63hlh2p9hL7eHRQ%2Bb48%3DfS0ff3ik1acX4l54c5tVW5NcEEuXvTEgfqwkuhTTUGLWh0lUdj'
-consumer_key = 'I2LbMWoVqpzGbTMUud7ye4Qgk'
-consumer_secret = '3uUmpD3tfsLvdt4WzawBJX6mDRv4qxrdGiVR3LWXr7EzIFVuTt'
-access_token = '1662587430539493376-jBSwx86BJ82N5FbfMEW1ntnpuJClZ3'
-access_token_secret = '1XUyLjX3R1b5velJq4SrUZ6PwYspwepqMBETJUreEjBgu'
+# API Twitter variables d'access
+bearer=os.environ.get('BEARER')
+consumer_key = os.environ.get('CONSUMER_KEY')
+consumer_secret = os.environ.get('CONSUMER_SECRET')
+access_token = os.environ.get('ACCESS_TOKEN')
+access_token_secret = os.environ.get('ACCESS_TOKEN_SECRET')
 
-# Configuration de l'API Twitter
-auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-auth.set_access_token(access_token, access_token_secret)
+# Creation client API
 api = tweepy.Client(bearer_token=bearer,
                     access_token=access_token,
                     access_token_secret=access_token_secret,
                     consumer_key=consumer_key,
                     consumer_secret=consumer_secret)
-LIST_MANGAS = ["Black Clover",
-               "Jujutsu Kaisen",
-               "Killing Killer"]
+LIST_MANGAS = ["Eternal Club",
+               "Ao No Hako",
+               "Forget Vivian"]
 
 # Fonction pour tweeter les scans
-def tweet_latest_scan(j):
+def tweet_latest_japscan(j):
     # Récupération des scans à partir du site japscan
     news_url = 'https://www.japscan.lol/'
     response = requests.get(news_url)
@@ -40,14 +39,13 @@ def tweet_latest_scan(j):
     # Publier uniquement les nouveaux scans
     for scan in scan_div:
         titre = scan.find('h3', class_='mb-0').find('a')['title']
-        chapitre = scan.find('div', class_='mb-0').find('a')['title']
+        chapitre = scan.find('div', class_='mb-0').find('a')['title'].split(":")[0]
         if titre in LIST_MANGAS:
             if (titre+'/'+chapitre) not in scans_tweetes:
                 print(f'Titre : {titre} / {chapitre}')
 
                 #Faire le tweet
-                #api.create_tweet(text='Nouveau scan de '+titre+' '+chapitre+'.')
-                time.sleep(2)
+                api.create_tweet(text='Le '+chapitre.lower()+' de '+titre+' est sorti !')
                                 
                 # Ajouter le scan à la liste des scans publiés
                 scans_tweetes.append(titre+'/'+chapitre)
@@ -62,6 +60,6 @@ def tweet_latest_scan(j):
 # Exécuter en boucle
 n=1
 while True:
-    tweet_latest_scan(n)
+    tweet_latest_japscan(n)
     n=n+1
-    time.sleep(100) 
+    time.sleep(60) 
