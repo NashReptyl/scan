@@ -27,7 +27,9 @@ collection = db['tweets']
 
 LIST_MANGAS = ["Eternal Club",
                "Ao No Hako",
-               "Forget Vivian"]
+               "Forget Vivian",
+               "One Piece",
+               "What Are We"]
 
 # Fonction pour tweeter les scans
 def tweet_latest_japscan():
